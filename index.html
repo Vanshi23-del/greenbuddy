@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenBuddy 🌱</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🌱 GreenBuddy</h1>
+
+        <p class="subtitle">
+            Your AI companion for getting outside.
+        </p>
+
+        <div class="card">
+
+            <label>How much time do you have?</label>
+
+            <select id="time">
+                <option value="15">15 minutes</option>
+                <option value="30">30 minutes</option>
+                <option value="60">1 hour</option>
+                <option value="120">2+ hours</option>
+            </select>
+
+            <label>What's your mood?</label>
+
+            <select id="mood">
+                <option value="relaxed">Relaxed 🌿</option>
+                <option value="active">Active 🏃</option>
+                <option value="curious">Curious 🔎</option>
+                <option value="social">Social 👭</option>
+            </select>
+
+            <button onclick="generateActivity()">
+                🌳 Give Me an Outdoor Plan
+            </button>
+
+        </div>
+
+        <div id="result" class="result">
+            Your outdoor adventure will appear here 🌼
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
