@@ -30,3 +30,52 @@ function generateActivity() {
         Try to spend the whole activity without scrolling social media.
     `;
 }
+
+
+async function askGreenBuddy() {
+
+    const questionInput = document.getElementById("aiQuestion");
+    const aiResult = document.getElementById("aiResult");
+
+    const question = questionInput.value.trim();
+
+    if (!question) {
+        aiResult.innerHTML = "🌱 Please type a question first!";
+        return;
+    }
+
+    aiResult.innerHTML = "🤖 GreenBuddy is thinking...";
+
+    try {
+        const response = await fetch("/ask-ai", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                question: question
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Something went wrong.");
+        }
+
+        aiResult.innerHTML = `
+            <h3>🌱 GreenBuddy says:</h3>
+            <p>${data.answer}</p>
+        `;
+
+    } catch (error) {
+
+        console.error(error);
+
+        aiResult.innerHTML = `
+            ❌ Sorry, I couldn't connect to GreenBuddy AI.
+            <br>
+            Please make sure the GreenBuddy server is running.
+        `;
+    }
+}
