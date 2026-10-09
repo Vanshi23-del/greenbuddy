@@ -4,30 +4,25 @@ function generateActivity() {
     const mood = document.getElementById("mood").value;
     const result = document.getElementById("result");
 
-    let activity;
+    let activity = "";
 
     if (mood === "relaxed") {
-        activity = "🌿 Take a peaceful walk in a nearby park. Leave your phone in your pocket and spend a few minutes noticing trees, sounds and fresh air.";
-    }
-
+        activity = `🌿 Take a peaceful ${time}-minute nature walk. Find a quiet place, breathe slowly, and enjoy the surroundings.`;
+    } 
     else if (mood === "active") {
-        activity = "🏃 Go for a brisk walk or light jog. Try to keep moving continuously and enjoy the surroundings instead of looking at your phone.";
-    }
-
+        activity = `🏃 Try a ${time}-minute outdoor workout! Walk, jog, stretch, or do some jumping jacks.`;
+    } 
     else if (mood === "curious") {
-        activity = "🐦 Go outside and look for three different plants, birds or interesting natural objects. Take notes about what you discover.";
-    }
-
+        activity = `🔎 Go on a ${time}-minute mini nature adventure. Look for interesting plants, birds, insects, or unusual objects around you.`;
+    } 
     else if (mood === "social") {
-        activity = "👭 Ask a friend or family member to join you for a walk. Talk about something interesting instead of scrolling on your phones.";
+        activity = `👫 Invite a friend for a ${time}-minute outdoor activity. You could walk, talk, play a game, or explore a nearby place together.`;
     }
 
     result.innerHTML = `
-        <h2>Your ${time}-minute plan 🌱</h2>
+        <h3>🌱 Your Outdoor Plan</h3>
         <p>${activity}</p>
-        <br>
-        <strong>📵 Touch Grass Challenge:</strong>
-        Try to spend the whole activity without scrolling social media.
+        <p>🌳 <strong>Touch Grass Challenge:</strong> Spend at least ${time} minutes outside today!</p>
     `;
 }
 
@@ -40,13 +35,14 @@ async function askGreenBuddy() {
     const question = questionInput.value.trim();
 
     if (!question) {
-        aiResult.innerHTML = "🌱 Please type a question first!";
+        aiResult.innerHTML = "🌱 Please ask me something first!";
         return;
     }
 
     aiResult.innerHTML = "🤖 GreenBuddy is thinking...";
 
     try {
+
         const response = await fetch("/ask-ai", {
             method: "POST",
             headers: {
@@ -64,7 +60,7 @@ async function askGreenBuddy() {
         }
 
         aiResult.innerHTML = `
-            <h3>🌱 GreenBuddy says:</h3>
+            <h3>🤖 GreenBuddy says:</h3>
             <p>${data.answer}</p>
         `;
 
@@ -74,6 +70,56 @@ async function askGreenBuddy() {
 
         aiResult.innerHTML = `
             ❌ Sorry, I couldn't connect to GreenBuddy AI.
+            <br>
+            Please make sure the GreenBuddy server is running.
+        `;
+    }
+}
+
+
+async function sortWaste() {
+
+    const wasteInput = document.getElementById("wasteItem");
+    const wasteResult = document.getElementById("wasteResult");
+
+    const item = wasteInput.value.trim();
+
+    if (!item) {
+        wasteResult.innerHTML = "♻️ Please enter an item first!";
+        return;
+    }
+
+    wasteResult.innerHTML = "🤖 GreenBuddy is checking...";
+
+    try {
+
+        const response = await fetch("/ask-ai", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                question: `I have this waste item: "${item}". Tell me how I should dispose of it in a simple and practical way. Mention whether it is generally recyclable, reusable, compostable, or should go to general waste. Also mention if local rules may differ. Keep the answer short and beginner-friendly.`
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Something went wrong.");
+        }
+
+        wasteResult.innerHTML = `
+            <h3>♻️ GreenBuddy says:</h3>
+            <p>${data.answer}</p>
+        `;
+
+    } catch (error) {
+
+        console.error(error);
+
+        wasteResult.innerHTML = `
+            ❌ Sorry, I couldn't check that item.
             <br>
             Please make sure the GreenBuddy server is running.
         `;
