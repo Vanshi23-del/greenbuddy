@@ -1,110 +1,108 @@
-```html
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GreenBuddy 🌱</title>
+    <meta name="theme-color" content="#eef7ee">
+    <meta name="description" content="GreenBuddy helps you explore outdoors, learn eco-friendly habits, and sort waste with AI-powered guidance.">
+    <title>GreenBuddy | Your Eco-Friendly AI Companion</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <main class="container">
 
-    <div class="container">
-
+```
+    <header class="hero">
+        <p class="eyebrow">YOUR LITTLE STEP TOWARDS A GREENER PLANET</p>
         <h1>🌱 GreenBuddy</h1>
-
         <p class="subtitle">
-            Your AI companion for getting outside.
+            Your friendly AI companion for greener living,
+            outdoor adventures, and a healthier planet.
         </p>
+    </header>
 
-        <div class="card">
+    <section class="card" aria-labelledby="activity-heading">
+        <h2 id="activity-heading">🌳 Your Outdoor Adventure</h2>
+        <p>Take a break, get outside, and reconnect with nature.</p>
 
-            <label>How much time do you have?</label>
+        <label for="time">How much time do you have?</label>
+        <select id="time">
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+            <option value="60">1 hour</option>
+            <option value="120">2+ hours</option>
+        </select>
 
-            <select id="time">
-                <option value="15">15 minutes</option>
-                <option value="30">30 minutes</option>
-                <option value="60">1 hour</option>
-                <option value="120">2+ hours</option>
-            </select>
+        <label for="mood">What's your mood?</label>
+        <select id="mood">
+            <option value="relaxed">Relaxed 🌿</option>
+            <option value="active">Active 🏃</option>
+            <option value="curious">Curious 🔎</option>
+            <option value="social">Social 👭</option>
+        </select>
 
-            <label>What's your mood?</label>
+        <button type="button" onclick="generateActivity()">
+            Generate My Outdoor Plan
+        </button>
 
-            <select id="mood">
-                <option value="relaxed">Relaxed 🌿</option>
-                <option value="active">Active 🏃</option>
-                <option value="curious">Curious 🔎</option>
-                <option value="social">Social 👭</option>
-            </select>
-
-            <button onclick="generateActivity()">
-                🌳 Give Me an Outdoor Plan
-            </button>
-
+        <div id="result" class="result" aria-live="polite">
+            Your next outdoor adventure will appear here 🌼
         </div>
+    </section>
 
-        <div id="result" class="result">
-            Your outdoor adventure will appear here 🌼
+    <section class="card ai-card" aria-labelledby="assistant-heading">
+        <h2 id="assistant-heading">🤖 GreenBuddy AI Assistant</h2>
+        <p>Curious about sustainable living? Ask away!</p>
+
+        <label for="aiQuestion">Your question</label>
+        <input
+            type="text"
+            id="aiQuestion"
+            placeholder="How can I reduce plastic waste?"
+            autocomplete="off"
+        >
+
+        <button type="button" onclick="askGreenBuddy()">
+            Ask GreenBuddy
+        </button>
+
+        <div id="aiResult" class="result" aria-live="polite">
+            Your AI answer will appear here 💚
         </div>
+    </section>
 
+    <section class="card ai-card" aria-labelledby="waste-heading">
+        <h2 id="waste-heading">♻️ Waste Sorting Helper</h2>
+        <p>Every little action counts. Find out how to handle your waste.</p>
 
-        <!-- GreenBuddy AI Assistant -->
+        <label for="wasteItem">What item do you want to sort?</label>
+        <input
+            type="text"
+            id="wasteItem"
+            placeholder="e.g. plastic bottle, banana peel"
+            autocomplete="off"
+        >
 
-        <div class="card ai-card">
+        <button type="button" onclick="sortWaste()">
+            Check My Waste
+        </button>
 
-            <h2>🤖 Ask GreenBuddy AI</h2>
-
-            <p>
-                Ask me anything about eco-friendly living 🌱
-            </p>
-
-            <input
-                type="text"
-                id="aiQuestion"
-                placeholder="Example: How can I reduce plastic waste?"
-            >
-
-            <button onclick="askGreenBuddy()">
-                🌱 Ask Gemma
-            </button>
-
-            <div id="aiResult" class="result">
-                Your AI answer will appear here 💚
-            </div>
-
+        <div id="wasteResult" class="result" aria-live="polite">
+            Your waste-sorting advice will appear here ♻️
         </div>
+    </section>
 
+    <footer class="footer">
+        <p>Made with 💚 for a greener tomorrow.</p>
+        <p>GreenBuddy — small steps, meaningful change.</p>
+    </footer>
 
-        <!-- Waste Sorting Helper -->
+</main>
 
-        <div class="card ai-card">
-
-            <h2>♻️ Waste Sorting Helper</h2>
-
-            <p>
-                Not sure what to do with an item? Ask GreenBuddy!
-            </p>
-
-            <input
-                type="text"
-                id="wasteItem"
-                placeholder="Example: plastic bottle"
-            >
-
-            <button onclick="sortWaste()">
-                ♻️ Check Waste
-            </button>
-
-            <div id="wasteResult" class="result">
-                Your waste-sorting advice will appear here ♻️
-            </div>
-
-        </div>
-
-    </div>
-
-       <script src="script.js"></script>
+<script src="script.js"></script>
+```
 
 </body>
 </html>

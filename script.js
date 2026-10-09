@@ -1,127 +1,121 @@
-function generateActivity() {
 
+async function sortWaste() {
+    const itemInput = document.getElementById("wasteItem");
+    const wasteResult = document.getElementById("wasteResult");
+
+    const item = itemInput.value.trim();
+
+    if (!item) {
+        wasteResult.textContent = "♻️ Please enter an item first!";
+        return;
+    }
+
+    wasteResult.textContent = "🤖 GreenBuddy is checking...";
+
+    try {
+        const response = await fetch("/ask-ai", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                question: `I have this waste item: "${item}". Explain in simple, practical terms whether it can generally be recycled, reused, composted, or should go to general waste. Mention that local rules may differ. Keep the answer short and beginner-friendly.`
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Something went wrong.");
+        }
+
+        wasteResult.replaceChildren();
+
+        const heading = document.createElement("h3");
+        heading.textContent = "♻️ GreenBuddy says:";
+
+        const paragraph = document.createElement("p");
+        paragraph.textContent = data.answer;
+
+        wasteResult.append(heading, paragraph);
+    } catch (error) {
+        console.error(error);
+        wasteResult.textContent =
+            "Sorry! We couldn't check this item right now. Please try again.";
+    }
+}
+
+function generateActivity() {
     const time = document.getElementById("time").value;
     const mood = document.getElementById("mood").value;
     const result = document.getElementById("result");
 
-    let activity = "";
+    const activities = {
+        relaxed: [
+            "Take a peaceful walk in a nearby park.",
+            "Sit under a tree and enjoy the fresh air.",
+            "Spend some quiet time observing birds and plants."
+        ],
+        active: [
+            "Go for a brisk walk or a light jog.",
+            "Explore a nearby walking trail.",
+            "Try an outdoor stretching session."
+        ],
+        curious: [
+            "Explore different plants and identify their leaves.",
+            "Observe birds and listen to their calls.",
+            "Discover a new nature spot in your neighbourhood."
+        ],
+        social: [
+            "Invite a friend for a walk in the park.",
+            "Plan a small outdoor picnic with reusable containers.",
+            "Take a friend on a nature photography walk."
+        ]
+    };
 
-    if (mood === "relaxed") {
-        activity = `🌿 Take a peaceful ${time}-minute nature walk. Find a quiet place, breathe slowly, and enjoy the surroundings.`;
-    } 
-    else if (mood === "active") {
-        activity = `🏃 Try a ${time}-minute outdoor workout! Walk, jog, stretch, or do some jumping jacks.`;
-    } 
-    else if (mood === "curious") {
-        activity = `🔎 Go on a ${time}-minute mini nature adventure. Look for interesting plants, birds, insects, or unusual objects around you.`;
-    } 
-    else if (mood === "social") {
-        activity = `👫 Invite a friend for a ${time}-minute outdoor activity. You could walk, talk, play a game, or explore a nearby place together.`;
-    }
+    const options = activities[mood] || activities.relaxed;
+    const activity = options[Math.floor(Math.random() * options.length)];
 
     result.innerHTML = `
-        <h3>🌱 Your Outdoor Plan</h3>
-        <p>${activity}</p>
-        <p>🌳 <strong>Touch Grass Challenge:</strong> Spend at least ${time} minutes outside today!</p>
+        <h3>Your Green Adventure 🌿</h3>
+        <p><strong>Time available:</strong> ${time} minutes</p>
+        <p><strong>Your activity:</strong> ${activity}</p>
+        <p>Enjoy nature and leave the place as clean as you found it! 💚</p>
     `;
 }
 
-
 async function askGreenBuddy() {
-
-    const questionInput = document.getElementById("aiQuestion");
-    const aiResult = document.getElementById("aiResult");
-
-    const question = questionInput.value.trim();
+    const question = document.getElementById("aiQuestion").value.trim();
+    const result = document.getElementById("aiResult");
 
     if (!question) {
-        aiResult.innerHTML = "🌱 Please ask me something first!";
+        result.textContent = "Please enter a question first. 🌱";
         return;
     }
 
-    aiResult.innerHTML = "🤖 GreenBuddy is thinking...";
+    result.textContent = "GreenBuddy is thinking... 💚";
 
     try {
-
         const response = await fetch("/ask-ai", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                question: question
-            })
+            body: JSON.stringify({ question: question })
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.error || "Something went wrong.");
+            throw new Error(data.error || "The server could not answer.");
         }
 
-        aiResult.innerHTML = `
-            <h3>🤖 GreenBuddy says:</h3>
-            <p>${data.answer}</p>
-        `;
-
+        result.textContent =
+            data.answer || data.response || data.reply ||
+            "I couldn't find an answer. Please try again.";
     } catch (error) {
-
-        console.error(error);
-
-        aiResult.innerHTML = `
-            ❌ Sorry, I couldn't connect to GreenBuddy AI.
-            <br>
-            Please make sure the GreenBuddy server is running.
-        `;
-    }
-}
-
-
-async function sortWaste() {
-
-    const wasteInput = document.getElementById("wasteItem");
-    const wasteResult = document.getElementById("wasteResult");
-
-    const item = wasteInput.value.trim();
-
-    if (!item) {
-        wasteResult.innerHTML = "♻️ Please enter an item first!";
-        return;
-    }
-
-    wasteResult.innerHTML = "🤖 GreenBuddy is checking...";
-
-    try {
-
-        const response = await fetch("/ask-ai", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                question: `I have this waste item: "${item}". Tell me how I should dispose of it in a simple and practical way. Mention whether it is generally recyclable, reusable, compostable, or should go to general waste. Also mention if local rules may differ. Keep the answer short and beginner-friendly.`
-            })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || "Something went wrong.");
-        }
-
-        wasteResult.innerHTML = `
-            <h3>♻️ GreenBuddy says:</h3>
-            <p>${data.answer}</p>
-        `;
-
-    } catch (error) {
-
-        console.error(error);
-
-        wasteResult.innerHTML = `
-            ❌ Sorry, I couldn't check that item.
-            <br>
-            Please make sure the GreenBuddy server is running.
-        `;
+        console.error("GreenBuddy AI error:", error);
+        result.textContent =
+            "Sorry, I couldn't connect to the AI. Please check that the server is running and try again.";
     }
 }
