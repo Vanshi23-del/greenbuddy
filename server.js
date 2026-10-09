@@ -1,15 +1,9 @@
-require("dotenv").config();
 
 const express = require("express");
 const path = require("path");
-const { GoogleGenAI } = require("@google/genai");
 
 const app = express();
 const PORT = 3000;
-
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-});
 
 app.use(express.json());
 app.use(express.static(__dirname));
@@ -18,38 +12,52 @@ app.post("/ask-ai", async (req, res) => {
   try {
     const question = req.body.question;
 
-    if (!question) {
+    if (typeof question !== "string" || !question.trim()) {
       return res.status(400).json({
         error: "Please enter a question.",
       });
     }
 
-    const response = await ai.models.generateContent({
-      model: "gemma-4-26b-a4b-it",
-      contents: `You are GreenBuddy, a friendly environmental assistant.
-Give simple, practical and beginner-friendly answers about:
-- recycling
-- waste management
-- reducing plastic
-- saving water
-- saving electricity
-- eco-friendly habits
+    const response = await fetch("http://127.0.0.1:11434/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gemma3:1b",
+        prompt: `You are GreenBuddy, a friendly environmental assistant.
+Give simple, practical, beginner-friendly answers about:
+- Recycling and waste management
+- Reducing plastic
+- Saving water and electricity
+- Eco-friendly daily habits
+- Safe outdoor activities and connecting with nature
 
-User question: ${question}`,
+Keep answers clear and useful.
+
+User question: ${question.trim()}`,
+        stream: false,
+      }),
     });
+
+    if (!response.ok) {
+      throw new Error(`Ollama returned status ${response.status}`);
+    }
+
+    const data = await response.json();
 
     res.json({
-      answer: response.text,
+      answer: data.response || "Please try asking your question again.",
     });
   } catch (error) {
-    console.error("AI Error:", error);
+    console.error("Local AI error:", error.message);
 
     res.status(500).json({
-      error: "Sorry, GreenBuddy AI could not answer right now.",
+      error: "GreenBuddy's local AI could not respond. Please check that Ollama is running.",
     });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`🌱 GreenBuddy is running at http://localhost:${PORT}`);
+  console.log(`GreenBuddy is running at http://localhost:${PORT}`);
 });
