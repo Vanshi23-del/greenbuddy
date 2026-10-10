@@ -75,11 +75,19 @@ function generateActivity() {
 
     const options = activities[mood] || activities.relaxed;
     const activity = options[Math.floor(Math.random() * options.length)];
+    const completeButton = document.getElementById("completeActivityButton");
+const completionMessage = document.getElementById("activityCompletionMessage");
 
+completeButton.hidden = false;
+completeButton.disabled = false;
+completeButton.textContent = "🌿 I Completed My Outdoor Activity!";
+completionMessage.textContent = "";
     result.innerHTML = `
         <h3>Your Green Adventure 🌿</h3>
         <p><strong>Time available:</strong> ${time} minutes</p>
         <p><strong>Your activity:</strong> ${activity}</p>
+<p><strong>Your mission:</strong> Spend time observing nature and notice three things around you.</p>
+<p><strong>Nature reminder:</strong> Don't pluck leaves or disturb wildlife. 💚</p>
         <p>Enjoy nature and leave the place as clean as you found it! 💚</p>
     `;
 }
@@ -119,3 +127,85 @@ async function askGreenBuddy() {
             "Sorry, I couldn't connect to the AI. Please check that the server is running and try again.";
     }
 }
+
+function updateChallengeProgress() {
+    const tasks = document.querySelectorAll(".challenge-task");
+    const count = document.getElementById("challengeCount");
+    const progress = document.getElementById("challengeProgress");
+    const message = document.getElementById("challengeMessage");
+
+    const completed = document.querySelectorAll(
+        ".challenge-task:checked"
+    ).length;
+
+    count.textContent = completed;
+    progress.value = completed;
+
+    if (completed === 3) {
+        message.textContent =
+            "Amazing! 🌿 You completed today's Touch Grass Challenge!";
+    } else if (completed > 0) {
+        message.textContent =
+            `Great start! You've completed ${completed} of 3 challenges. Keep going!`;
+    } else {
+        message.textContent =
+            "Complete a challenge to get started!";
+    }
+}
+
+document.querySelectorAll(".challenge-task").forEach((task) => {
+    task.addEventListener("change", updateChallengeProgress);
+});
+
+updateChallengeProgress();
+
+
+ // Remember completed challenges after refreshing the page
+document.querySelectorAll(".challenge-task").forEach((task) => {
+   const key = "greenbuddy-challenge-" + new Date().toLocaleDateString() + "-" + task.value;
+    task.checked = localStorage.getItem(key) === "true";
+
+    task.addEventListener("change", () => {
+        localStorage.setItem(key, task.checked);
+        updateChallengeProgress();
+    });
+});
+
+updateChallengeProgress();
+
+
+
+function completeOutdoorActivity() {
+    const button = document.getElementById("completeActivityButton");
+    const message = document.getElementById("activityCompletionMessage");
+
+    const today = new Date().toLocaleDateString();
+    const key = "greenbuddy-outdoor-completed-" + today;
+
+    localStorage.setItem(key, "true");
+
+    message.textContent =
+        "Amazing! 🌿 You did it! Thank you for spending time with nature today. 💚";
+
+    button.textContent = "✅ Activity Completed!";
+    button.disabled = true;
+}
+
+function restoreOutdoorCompletion() {
+    const button = document.getElementById("completeActivityButton");
+    const message = document.getElementById("activityCompletionMessage");
+
+    const today = new Date().toLocaleDateString();
+    const key = "greenbuddy-outdoor-completed-" + today;
+
+    if (localStorage.getItem(key) === "true") {
+        button.hidden = false;
+        button.disabled = true;
+        button.textContent = "✅ Activity Completed!";
+
+        message.textContent =
+            "Amazing! 🌿 You completed an outdoor activity today. 💚";
+    }
+}
+
+restoreOutdoorCompletion();

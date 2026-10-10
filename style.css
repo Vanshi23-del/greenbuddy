@@ -310,3 +310,44 @@ html {
         padding: 20px 10px;
     }
 }
+
+/* Touch Grass Challenge */
+.challenge-progress {
+    margin: 20px 0;
+}
+
+.challenge-progress progress {
+    width: 100%;
+    height: 14px;
+    accent-color: #2e7d32;
+}
+
+.challenge-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 20px 0;
+}
+
+.challenge-list label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px;
+    background: #f0f8f0;
+    border: 1px solid #d6ead6;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.challenge-list input[type="checkbox"] {
+    margin-top: 4px;
+    accent-color: #2e7d32;
+    transform: scale(1.15);
+    cursor: pointer;
+}
+
+#challengeMessage {
+    line-height: 1.6;
+    border-radius: 10px;
+}

@@ -34,33 +34,79 @@
         </p>
     </header>
 
-    <section class="card" aria-labelledby="activity-heading">
-        <h2 id="activity-heading">🌳 Your Outdoor Adventure</h2>
-        <p>Take a break, get outside, and reconnect with nature.</p>
+    
+<section class="card" aria-labelledby="activity-heading">
+    <h2 id="activity-heading">🌳 Your Outdoor Adventure</h2>
+    <p>Take a break, get outside, and reconnect with nature.</p>
 
-        <label for="time">How much time do you have?</label>
-        <select id="time">
-            <option value="15">15 minutes</option>
-            <option value="30">30 minutes</option>
-            <option value="60">1 hour</option>
-            <option value="120">2+ hours</option>
-        </select>
+    <label for="time">How much time do you have?</label>
+    <select id="time">
+        <option value="15">15 minutes</option>
+        <option value="30">30 minutes</option>
+        <option value="60">1 hour</option>
+        <option value="120">2+ hours</option>
+    </select>
 
-        <label for="mood">What's your mood?</label>
-        <select id="mood">
-            <option value="relaxed">Relaxed 🌿</option>
-            <option value="active">Active 🏃</option>
-            <option value="curious">Curious 🔎</option>
-            <option value="social">Social 👭</option>
-        </select>
+    <label for="mood">What's your mood?</label>
+    <select id="mood">
+        <option value="relaxed">Relaxed 🌿</option>
+        <option value="active">Active 🏃</option>
+        <option value="curious">Curious 🔎</option>
+        <option value="social">Social 👭</option>
+    </select>
 
-        <button type="button" onclick="generateActivity()">
-            Generate My Outdoor Plan
-        </button>
+    <button type="button" onclick="generateActivity()">
+        Generate My Outdoor Plan
+    </button>
 
-        <div id="result" class="result" aria-live="polite">
-            Your next outdoor adventure will appear here 🌼
+    <div id="result" class="result" aria-live="polite">
+        Your next outdoor adventure will appear here 🌼
+    </div>
+
+    <button
+        type="button"
+        id="completeActivityButton"
+        onclick="completeOutdoorActivity()"
+        hidden
+    >
+        🌿 I Completed My Outdoor Activity!
+    </button>
+
+    <p
+        id="activityCompletionMessage"
+        class="result"
+        aria-live="polite"
+    ></p>
+</section>
+    <section class="card" aria-labelledby="challenge-heading">
+        <h2 id="challenge-heading">🌿 Touch Grass Challenge</h2>
+        <p>Take a little break from screens and spend time with nature.</p>
+
+        <div class="challenge-progress">
+            <p>Today's progress: <strong><span id="challengeCount">0</span>/3</strong></p>
+            <progress id="challengeProgress" value="0" max="3"></progress>
         </div>
+
+        <div class="challenge-list">
+            <label>
+                <input type="checkbox" class="challenge-task" value="0">
+                Spend 10 minutes outdoors
+            </label>
+
+            <label>
+                <input type="checkbox" class="challenge-task" value="1">
+                Notice three things in nature
+            </label>
+
+            <label>
+                <input type="checkbox" class="challenge-task" value="2">
+                Pick up litter safely or water a plant
+            </label>
+        </div>
+
+        <p id="challengeMessage" class="result" aria-live="polite">
+            Complete a challenge to get started!
+        </p>
     </section>
 
     <section class="card ai-card" aria-labelledby="assistant-heading">
